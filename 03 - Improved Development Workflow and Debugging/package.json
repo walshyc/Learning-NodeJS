@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/walshyc/Learning-NodeJS/issues"
   },
-  "homepage": "https://github.com/walshyc/Learning-NodeJS#readme"
+  "homepage": "https://github.com/walshyc/Learning-NodeJS#readme",
+  "devDependencies": {
+    "nodemon": "^1.19.2"
+  }
 }
