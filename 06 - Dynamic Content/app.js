@@ -1,16 +1,27 @@
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
+const expressHbs = require('express-handlebars');
 
 const app = express();
 
-app.set('view engine', 'pug');
+app.engine(
+    'hbs',
+    expressHbs({
+        layoutsDir: 'views/layouts/',
+        defaultLayout: 'main-layout',
+        extname: 'hbs'
+    })
+);
+app.set('view engine', 'hbs');
 app.set('views', 'views'); //sets where the HTMl templates are container
 
 const adminData = require('./routes/admin.js');
 const shopRoutes = require('./routes/shop.js');
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/admin', adminData.routes);
