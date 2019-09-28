@@ -7,7 +7,7 @@ const app = express();
 
 
 app.set('view engine', 'ejs');
-app.set('views', 'views'); //sets where the HTMl templates are container
+app.set('views', 'views'); //sets where the HTMl templates are contained, not required if using views folder
 
 const adminData = require('./routes/admin.js');
 const shopRoutes = require('./routes/shop.js');
