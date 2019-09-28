@@ -1,0 +1,24 @@
+extends layouts/main-layout.pug 
+
+block styles    
+    link(rel="stylesheet" href="/css/product.css")
+    
+block content    
+    main
+        if prods.length > 0
+            .grid
+                each product in prods
+                    article.card.product-item
+                        header.card__header
+                            h1.product__title #{product.title}
+                    
+                        .card__image
+                            img(src="https://images.pexels.com/photos/46274/pexels-photo-46274.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", alt="book")
+
+                        .card__content
+                            h2.product__price €19.99
+                            p.product__description Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque, praesentium maxime? Quam rem reprehenderit officia, quisquam explicabo assumenda delectus beatae.
+                        .card__actions
+                            button.btn Add to Cart
+        else 
+            h1 No Products
