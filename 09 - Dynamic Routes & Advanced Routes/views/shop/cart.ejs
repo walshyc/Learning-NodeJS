@@ -1,9 +1,24 @@
 <%- include('../includes/head.ejs') %>
-    </head>
+</head>
 
-    <body>
-        <%- include('../includes/navigation.ejs') %>
-        <main>
-            <h1>Your Cart</h1>
-        </main>
-        <%- include('../includes/end.ejs') %>
+<body>
+    <%- include('../includes/navigation.ejs') %>
+    <main>
+        <% if (products.length > 0) { %>
+        <h1>Your Cart</h1>
+        <ul>
+            <% products.forEach(p => { %>
+
+            <li>
+                <p><%= p.productData.title %> (<%= p.qty %>)</p>
+            </li>
+
+            <% }) %>
+        </ul>
+
+        <h5>Cart Total: €<%= cartTotal %></h5>
+        <% } else { %>
+        <h1>No products in cart!</h1>
+        <% } %>
+    </main>
+    <%- include('../includes/end.ejs') %>
