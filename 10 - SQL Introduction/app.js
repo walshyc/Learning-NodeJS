@@ -15,13 +15,6 @@ app.set('views', 'views'); //sets where the HTMl templates are contained, not re
 const adminRoutes = require('./routes/admin.js');
 const shopRoutes = require('./routes/shop.js');
 
-db.execute('SELECT * FROM products')
-    .then(result => {
-        console.log(result[0], result[1]);
-    })
-    .catch(err => {
-        console.log(err);
-    });
 
 app.use(bodyParser.urlencoded({
     extended: true
