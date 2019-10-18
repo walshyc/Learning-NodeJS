@@ -13,6 +13,15 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views'); //sets where the HTMl templates are contained, not required if using views folder
 
+app.use((req, res, next) => {
+    User.findByPk(1)
+    .then( user => {
+        req.user = user;
+        next();
+    })
+    .catch(err => console.log(err));
+});
+
 const adminRoutes = require('./routes/admin.js');
 const shopRoutes = require('./routes/shop.js');
 
@@ -34,10 +43,20 @@ Product.belongsTo(User, {
 User.hasMany(Product);
 
 sequelize
-    .sync({force: true})
+    .sync()
     .then(result => {
-        // console.log(result);
+        return User.findByPk(1);
+    })
+    .then(user => {
+        if (!user) {
+            return User.create({name: 'Conor', email:'demo@conor.ie'});
+        }
+        return user;
+    })
+    .then(user => {
+        // console.log(user);
         app.listen(3000);
+    
     })
     .catch(err => {
         console.log(err);
