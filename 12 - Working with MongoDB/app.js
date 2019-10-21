@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 });
 
 const adminRoutes = require('./routes/admin.js');
-// const shopRoutes = require('./routes/shop.js');
+const shopRoutes = require('./routes/shop.js');
 
 
 app.use(bodyParser.urlencoded({
@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/admin', adminRoutes);
-// app.use(shopRoutes);
+app.use(shopRoutes);
 
 app.use(errorController.get404);
 
