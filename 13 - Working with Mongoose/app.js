@@ -13,7 +13,7 @@ app.set('views', 'views'); //sets where the HTMl templates are contained, not re
 app.use((req, res, next) => {
     User.findById("5daf237607f3831f1484ae36")
         .then(user => {
-            req.user = user4;
+            req.user = user;
             next();
         })
         .catch(err => console.log(err));
