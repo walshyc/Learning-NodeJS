@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
@@ -10,14 +11,18 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
     const title = req.body.title;
-    const imageURL = req.body.imageURL;
+    const imageUrl = req.body.imageURL;
     const price = req.body.price;
     const description = req.body.description;
-    const product = new Product(title, price, description, imageURL, null, req.user._id);
+    const product = new Product({
+        title: title,
+        price: price,
+        imageUrl: imageUrl,
+        description: description
+    });
     product
         .save()
         .then(result => {
-            console.log('created a product');
             res.redirect('/admin/products');
         })
         .catch(err => console.log(err));

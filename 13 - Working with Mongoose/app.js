@@ -4,20 +4,20 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const errorController = require('./controllers/error');
-const User = require('./models/user');
+// const User = require('./models/user');
 const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views'); //sets where the HTMl templates are contained, not required if using views folder
 
-app.use((req, res, next) => {
-    User.findById("5daee6a676d1f85540e79ecb")
-        .then(user => {
-            req.user = new User(user.name, user.email, user.cart, user._id);
-            next();
-        })
-        .catch(err => console.log(err));
-});
+// app.use((req, res, next) => {
+//     User.findById("5daee6a676d1f85540e79ecb")
+//         .then(user => {
+//             req.user = new User(user.name, user.email, user.cart, user._id);
+//             next();
+//         })
+//         .catch(err => console.log(err));
+// });
 
 const adminRoutes = require('./routes/admin.js');
 const shopRoutes = require('./routes/shop.js');
