@@ -84,7 +84,6 @@ exports.postDeleteProduct = (req, res, next) => {
         .deleteByID(prodID)
         .then(() => {})
         .then(result => {
-            console.log("Destroyed Product");
             res.redirect('/admin/products');
         })
         .catch(err => console.log(err));
