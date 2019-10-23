@@ -1,0 +1,34 @@
+{
+  "name": "learning-node-js",
+  "version": "1.0.0",
+  "description": "learning node js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/walshyc/Learning-NodeJS.git"
+  },
+  "author": "Conor Walsh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/walshyc/Learning-NodeJS/issues"
+  },
+  "homepage": "https://github.com/walshyc/Learning-NodeJS#readme",
+  "devDependencies": {
+    "nodemon": "^1.19.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "mongodb": "^3.3.3",
+    "mongoose": "^5.7.6",
+    "mysql2": "^1.7.0",
+    "pug": "^2.0.4",
+    "sequelize": "^5.19.2"
+  }
+}

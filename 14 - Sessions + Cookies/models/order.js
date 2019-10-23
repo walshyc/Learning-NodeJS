@@ -11,8 +11,7 @@ const orderSchema = new Schema({
         quantity: {
             type: Number,
             required: true
-        },
-        
+        }
     }],
     user: {
         name: {
@@ -24,10 +23,6 @@ const orderSchema = new Schema({
             required: true,
             ref: 'User'
         }
-    },
-    total: {
-        type: Number,
-        required: true
     }
 });
 

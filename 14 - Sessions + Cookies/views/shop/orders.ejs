@@ -16,11 +16,8 @@
                                 <% order.products.forEach(p => { %>
                                     <li class="orders__products-item"><%= p.product.title %> (<%= p.quantity %>)</li>
                                 <% }); %>
-                                <li class="orders__total">Total: €<%= order.total %></li>
                             </ul>
-                            
                         </li>
-                        
                     <% }); %>
                 </ul>
             <% } %>

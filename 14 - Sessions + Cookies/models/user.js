@@ -21,15 +21,8 @@ const userSchema = new Schema({
             quantity: {
                 type: Number,
                 required: true
-            },
-            total: {
-                type: Number,
-                required: true
             }
-        }],
-        cartTotal: {
-            type: Number
-        }
+        }]
     }
 });
 
@@ -43,22 +36,14 @@ userSchema.methods.addToCart = function (product) {
     if (cartProductIndex >= 0) {
         newQuantity = this.cart.items[cartProductIndex].quantity + 1;
         updatedCartItems[cartProductIndex].quantity = newQuantity;
-        updatedCartItems[cartProductIndex].total = product.price * newQuantity;
-
     } else {
         updatedCartItems.push({
             productId: product._id,
-            quantity: newQuantity,
-            total: product.price * newQuantity
+            quantity: newQuantity
         });
     }
-    let totalPrice = 0;
-    for (item in updatedCartItems) {
-        totalPrice = updatedCartItems[item].total + totalPrice;
-    }
     const updatedCart = {
-        items: updatedCartItems,
-        cartTotal: totalPrice.toFixed(2)
+        items: updatedCartItems
     };
     this.cart = updatedCart;
     return this.save();
@@ -73,11 +58,8 @@ userSchema.methods.removeFromCart = function (productId) {
     return this.save();
 };
 
-userSchema.methods.clearCart = function () {
-    this.cart = {
-        items: [],
-        cartTotal: 0
-    };
+userSchema.methods.clearCart = function() {
+    this.cart = {items: []};
     return this.save();
 };
 

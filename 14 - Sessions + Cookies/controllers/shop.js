@@ -62,12 +62,10 @@ exports.getCart = (req, res, next) => {
         .execPopulate()
         .then(user => {
             const products = user.cart.items;
-            const total = user.cart.cartTotal;
             res.render('shop/cart', {
                 path: '/cart',
                 pageTitle: 'Your Cart',
                 products: products,
-                total: total
             });
         })
         .catch(err => console.log(err));
@@ -91,7 +89,7 @@ exports.getOrders = (req, res, next) => {
             'user.userId': req.user._id
         })
         .then(orders => {
-                        res.render('shop/orders', {
+            res.render('shop/orders', {
                 path: '/orders',
                 pageTitle: 'Your Orders',
                 orders: orders
@@ -106,7 +104,6 @@ exports.postOrder = (req, res, next) => {
         .execPopulate()
         .then(user => {
             const products = user.cart.items.map(i => {
-
                 return {
                     quantity: i.quantity,
                     product: {
@@ -119,8 +116,7 @@ exports.postOrder = (req, res, next) => {
                     name: req.user.name,
                     userId: req.user
                 },
-                products: products,
-                total: req.user.cart.cartTotal
+                products: products
             });
             return order.save();
         })
