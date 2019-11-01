@@ -95,7 +95,7 @@ exports.getOrders = (req, res, next) => {
             'user.userId': req.user._id
         })
         .then(orders => {
-            res.render('shop/orders', {
+                        res.render('shop/orders', {
                 path: '/orders',
                 pageTitle: 'Your Orders',
                 orders: orders,
