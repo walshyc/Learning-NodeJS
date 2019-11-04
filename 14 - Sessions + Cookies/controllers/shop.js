@@ -50,7 +50,7 @@ exports.postCart = (req, res, next) => {
     const prodID = req.body.productId;
     Product.findById(prodID)
         .then(product => {
-            return req.session.user.addToCart(product);
+            return req.user.addToCart(product);
         })
         .then(result => {
             res.redirect('/cart');
@@ -60,7 +60,7 @@ exports.postCart = (req, res, next) => {
 
 
 exports.getCart = (req, res, next) => {
-    req.session.user
+    req.user
         .populate('cart.items.productId')
         .execPopulate()
         .then(user => {
@@ -80,7 +80,7 @@ exports.getCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
     const prodID = req.body.productId;
-    req.session.user
+    req.user
         .removeFromCart(prodID)
         .then(result => {
             res.redirect('/cart');
@@ -92,7 +92,7 @@ exports.postCartDeleteProduct = (req, res, next) => {
 
 exports.getOrders = (req, res, next) => {
     Order.find({
-            'user.userId': req.session.user._id
+            'user.userId': req.user._id
         })
         .then(orders => {
                         res.render('shop/orders', {
@@ -106,7 +106,7 @@ exports.getOrders = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
-    req.session.user
+    req.user
         .populate('cart.items.productId')
         .execPopulate()
         .then(user => {
@@ -121,16 +121,16 @@ exports.postOrder = (req, res, next) => {
             });
             const order = new Order({
                 user: {
-                    name: req.session.user.name,
-                    userId: req.session.user
+                    name: req.user.name,
+                    userId: req.user
                 },
                 products: products,
-                total: req.session.user.cart.cartTotal
+                total: req.user.cart.cartTotal
             });
             return order.save();
         })
         .then(result => {
-            return req.session.user.clearCart();
+            return req.user.clearCart();
 
         })
         .then(() => {

@@ -20,14 +20,7 @@ const store = new MongoDBStore({
 app.set('view engine', 'ejs');
 app.set('views', 'views'); //sets where the HTMl templates are contained, not required if using views folder
 
-app.use((req, res, next) => {
-    User.findById("5daf237607f3831f1484ae36")
-        .then(user => {
-            req.user = user;
-            next();
-        })
-        .catch(err => console.log(err));
-});
+
 
 const adminRoutes = require('./routes/admin.js');
 const shopRoutes = require('./routes/shop.js');
@@ -43,6 +36,19 @@ app.use(session({
     saveUninitialized: false,
     store: store
 }));
+
+app.use((req, res, next) => {
+    if (!req.session.user) {
+        return next();
+    }
+    User
+        .findById(req.session.user._id)
+        .then(user => {
+            req.user = user;
+            next();
+        })
+        .catch(err => console.log(err));
+});
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
