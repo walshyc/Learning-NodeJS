@@ -21,8 +21,6 @@ const store = new MongoDBStore({
 app.set('view engine', 'ejs');
 app.set('views', 'views'); //sets where the HTMl templates are contained, not required if using views folder
 
-
-
 const adminRoutes = require('./routes/admin.js');
 const shopRoutes = require('./routes/shop.js');
 const authRoutes = require('./routes/auth.js');
