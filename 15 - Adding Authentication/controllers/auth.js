@@ -2,15 +2,9 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 
 exports.getLogin = (req, res, next) => {
-    // const isLoggedIn = req
-    //     .get('Cookie')
-    //     .split(';')[1]
-    //     .trim()
-    //     .split('=')[1];
     res.render('auth/login', {
         path: '/login',
-        pageTitle: 'Login',
-        isAuthenticated: false
+        pageTitle: 'Login'
     });
 };
 
@@ -59,8 +53,7 @@ exports.postLogout = (req, res, next) => {
 exports.getSignup = (req, res, next) => {
     res.render('auth/signup', {
         path: '/signup',
-        pageTitle: 'Signup',
-        isAuthenticated: false
+        pageTitle: 'Signup'
     });
 };
 
