@@ -23,7 +23,7 @@ exports.postLogin = (req, res, next) => {
                 console.log(err);
                 res.redirect('/');
             });
-            
+
         })
         .catch(err => console.log(err));
 };
@@ -34,4 +34,21 @@ exports.postLogout = (req, res, next) => {
         res.redirect('/');
     });
 
+};
+
+exports.getSignup = (req, res, next) => {
+    res.render('auth/signup', {
+        path: '/signup',
+        pageTitle: 'Signup',
+        isAuthenticated: false
+    });
+};
+
+exports.postSignup = (req, res, next) => {};
+
+exports.postLogout = (req, res, next) => {
+    req.session.destroy(err => {
+        console.log(err);
+        res.redirect('/');
+    });
 };
