@@ -44,7 +44,6 @@ exports.postEditProduct = (req, res, next) => {
             product.price = updatedPrice;
             product.description = updatedDescription;
             product.imageUrl = updatedUrl;
-            // product.userId = req.user._id;
             return product.save();
         })
         .then(result => {
