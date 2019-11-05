@@ -1,11 +1,13 @@
 const User = require('../models/user');
+const crypto = require('crypto');
+const API = require('../../keys');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 
 const transporter = nodemailer.createTransport(sendgridTransport({
     auth: {
-        api_key: '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'
+        api_key: API
     }
 }));
 
@@ -131,4 +133,125 @@ exports.postLogout = (req, res, next) => {
         res.redirect('/');
     });
 
+};
+
+exports.getReset = (req, res, next) => {
+    let message = req.flash('error');
+    if (message.length > 0) {
+        message = message[0];
+    } else {
+        message = null;
+    }
+    res.render('auth/reset', {
+        path: '/reset',
+        pageTitle: 'Password Reset',
+        errorMessage: message
+    });
+};
+
+exports.postReset = (req, res, next) => {
+
+    crypto.randomBytes(32, (err, buffer) => {
+        if (err) {
+            return res.redirect('/reset');
+        }
+        const token = buffer.toString('hex');
+
+        User
+            .findOne({
+                email: req.body.email
+            })
+            .then(user => {
+                if (!user) {
+                    req.flash('error', 'No account with that email found.');
+                    return res.redirect('/reset');
+                }
+
+                user.resetToken = token;
+                user.resetTokenExpiration = Date.now() + 3600000;
+                return user.save();
+            })
+            .then(result => {
+                res.redirect('/');
+                return transporter.sendMail({
+                    to: req.body.email,
+                    from: 'shop@nodecomplete.com',
+                    subject: 'Password Reset',
+                    html: `<h1>Password Reset</h1>
+                                <p>You requested a password reset</p>
+                                <p>Click this <a href="http://localhost:3000/reset/${token}">link</a> to set a new password</p>
+                                <small>This link will expire in 1 hour time</small>`
+                });
+            })
+            .catch(err => console.log(err));
+    });
+
+};
+
+exports.getNewPassword = (req, res, next) => {
+
+    const token = req.params.token;
+    User
+        .findOne({
+            resetToken: token,
+            resetTokenExpiration: {
+                $gt: Date.now()
+            }
+        })
+        .then(user => {
+            let message = req.flash('error');
+            if (message.length > 0) {
+                message = message[0];
+            } else {
+                message = null;
+            }
+            res.render('auth/new-password', {
+                path: '/new-password',
+                pageTitle: 'New Password',
+                errorMessage: message,
+                userId: user._id.toString(),
+                passwordToken: token
+            });
+        })
+        .catch();
+
+
+};
+
+exports.postNewPassword = (req, res, next) => {
+    const newPassword = req.body.password;
+    const userId = req.body.userId;
+    const passwordToken = req.body.passwordToken;
+    let resetUser;
+    User
+        .findOne({
+            resetToken: passwordToken,
+            resetTokenExpiration: {
+                $gt: Date.now()
+            },
+            _id: userId
+        })
+        .then(user => {
+            resetUser = user;
+            return bcrypt.hash(newPassword, 12);
+        })
+        .then(hashedPassword => {
+            resetUser.password = hashedPassword;
+            resetUser.resetToken = null;
+            resetUser.resetTokenExpiration = undefined;
+            return resetUser.save();
+        })
+        .then(result => {
+            res.redirect('/login');
+            return transporter.sendMail({
+                to: resetUser.email,
+                from: 'shop@nodecomplete.com',
+                subject: 'Password Reset Confirmation',
+                html: `<h1>Password Reset Confirmation</h1>
+                            <p>You have now reset your password.</p>
+                            <p>Click <a href="http://localhost:3000/login">here</a> to login!</p>
+                            `
+            });
+        })
+        .catch(err => console.log(err));
 };
