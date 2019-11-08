@@ -69,7 +69,9 @@ exports.postLogin = (req, res, next) => {
                             email: email,
                             password: password
                         },
-                        validationErrors: [{param: 'email'}]
+                        validationErrors: [{
+                            param: 'email'
+                        }]
                     });
             }
 
@@ -94,7 +96,9 @@ exports.postLogin = (req, res, next) => {
                                 email: email,
                                 password: password
                             },
-                            validationErrors: [{param: 'password'}]
+                            validationErrors: [{
+                                param: 'password'
+                            }]
                         });
                 })
                 .catch(err => {
@@ -102,7 +106,11 @@ exports.postLogin = (req, res, next) => {
                     res.redirect('/login');
                 });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
 
 exports.postLogout = (req, res, next) => {
@@ -176,7 +184,11 @@ exports.postSignup = (req, res, next) => {
                 html: '<h1>You have successfully signed up to NodeComplete</h1>'
             });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
 
 
@@ -237,7 +249,11 @@ exports.postReset = (req, res, next) => {
                                 <small>This link will expire in 1 hour time</small>`
                 });
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
+            });
     });
 
 };
@@ -267,7 +283,11 @@ exports.getNewPassword = (req, res, next) => {
                 passwordToken: token
             });
         })
-        .catch();
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 
 
 };
@@ -307,5 +327,9 @@ exports.postNewPassword = (req, res, next) => {
                             `
             });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };

@@ -20,7 +20,7 @@ router.post('/add-product', [
     .trim(),
     body('imageURL').isURL(),
     body('price', 'You must enter a number')
-    .isFloat(),    
+    .isFloat(),
     body('description')
     .isLength({
         min: 5,
@@ -43,7 +43,7 @@ router.post('/edit-product', [
     })
     .trim(),
     body('price', 'You must enter a number')
-    .isFloat(),    
+    .isFloat(),
     body('description')
     .isLength({
         min: 5,
