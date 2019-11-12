@@ -4,9 +4,7 @@
 
 <body>
     <%- include('../includes/navigation.ejs') %>
-
     <main>
-
         <% if (prods.length > 0) { %>
         <div class="grid">
             <% for (let product of prods) { %>
@@ -30,6 +28,10 @@
             </article>
             <% } %>
                 </div>
+                <section class="pagination">
+                    <a href="/?page=1">1</a>
+                    <a href="/?page=2">2</a>
+                </section>
                 <% } else { %>
                 <h1>No Products Found!</h1>
                 <% } %>
