@@ -18,6 +18,7 @@ router.post('/add-product', [
         min: 3
     })
     .trim(),
+    body('imageURL').isURL(),
     body('price', 'You must enter a number')
     .isFloat(),
     body('description')

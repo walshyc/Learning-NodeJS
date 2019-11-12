@@ -17,7 +17,7 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
     const title = req.body.title;
-    const image = req.body.image;
+    const imageUrl = req.body.imageURL;
     const price = req.body.price;
     const description = req.body.description;
     const errors = validationResult(req);
@@ -31,7 +31,7 @@ exports.postAddProduct = (req, res, next) => {
             hasError: true,
             product: {
                 title: title,
-                image: image,
+                imageUrl: imageUrl,
                 price: price,
                 description: description
             },
@@ -43,7 +43,7 @@ exports.postAddProduct = (req, res, next) => {
     const product = new Product({
         title: title,
         price: price,
-        image: image,
+        imageUrl: imageUrl,
         description: description,
         userId: req.user
     });
@@ -63,7 +63,7 @@ exports.postEditProduct = (req, res, next) => {
     const updatedTitle = req.body.title;
     const updatedPrice = req.body.price;
     const updatedDescription = req.body.description;
-    const updatedImage = req.body.image;
+    const updatedUrl = req.body.imageURL;
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -75,7 +75,7 @@ exports.postEditProduct = (req, res, next) => {
             hasError: true,
             product: {
                 title: updatedTitle,
-                image: updated,
+                imageUrl: updatedUrl,
                 price: updatedPrice,
                 description: updatedDescription,
                 _id: prodID
@@ -94,7 +94,7 @@ exports.postEditProduct = (req, res, next) => {
             product.title = updatedTitle;
             product.price = updatedPrice;
             product.description = updatedDescription;
-            product.image = updated;
+            product.imageUrl = updatedUrl;
             return product
                 .save()
                 .then(result => {
