@@ -55,6 +55,7 @@ app.use(multer({
     fileFilter: fileFilter
 }).single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(session({
     secret: 'A%D*G-KaPdSgVkYp2s5v8y/B?E(H+MbQ',
     resave: false,
@@ -65,14 +66,11 @@ app.use(session({
 app.use(csrfProtection);
 app.use(flash());
 
-
 app.use((req, res, next) => {
     res.locals.isAuthenticated = req.session.isLoggedIn;
     res.locals.csrfToken = req.csrfToken();
-
     next();
 });
-
 
 app.use((req, res, next) => {
 

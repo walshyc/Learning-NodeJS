@@ -49,8 +49,6 @@ router.post('/edit-product', [
         max: 400
     })
     .trim(),
-    body('imageURL').isURL(),
-
 ], adminController.postEditProduct);
 
 router.post('/delete-product', adminController.postDeleteProduct);
