@@ -51,6 +51,6 @@ router.post('/edit-product', [
     .trim(),
 ], adminController.postEditProduct);
 
-router.post('/delete-product', adminController.postDeleteProduct);
+router.delete('/product/:productID', adminController.deleteProduct);
 
 module.exports = router;
