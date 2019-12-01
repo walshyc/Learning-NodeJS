@@ -1,4 +1,6 @@
 <%- include('../includes/head.ejs') %>
+<script src="/js/stripe.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
 <link rel="stylesheet" href="/css/cart.css">
 </head>
 
@@ -16,6 +18,19 @@
         </ul>
         <div class="centered">
             <h2>Total: €<%= total %></h2>
+        </div>
+        <div class="centered">
+            <form action="/create-order" method="POST">
+                <script
+                  src="https://checkout.stripe.com/checkout.js"
+                  class="stripe-button"
+                  data-key="pk_test_E1ESvgit80GZ2VylW0qF35hH00CuiWskXj"
+                  data-name="Magazine Payment"
+                  data-description="Magazine purchase"
+                  data-amount="<%= total * 100 %>"
+                  data-currency="eur">
+                </script>
+              </form>
         </div>
 
 

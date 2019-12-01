@@ -4,6 +4,7 @@ const path = require('path');
 const Product = require('../models/product');
 const Order = require('../models/order');
 const PDFDocument = require('pdfkit');
+const stripe = require('stripe')('sk_test_3ZBbYbSUytpPXBkkrnczSPjf00iyVLjuRg');
 
 const ITEMS_PER_PAGE = 2;
 
@@ -191,12 +192,16 @@ exports.getCheckout = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
+    const token = req.body.stripeToken;
+    let totalSum = 0;
     req.user
         .populate('cart.items.productId')
         .execPopulate()
         .then(user => {
+            user.cart.items.forEach(p => {
+                totalSum += p.quantity * p.productId.price;
+            });
             const products = user.cart.items.map(i => {
-
                 return {
                     quantity: i.quantity,
                     product: {
@@ -215,6 +220,15 @@ exports.postOrder = (req, res, next) => {
             return order.save();
         })
         .then(result => {
+            const charge = stripe.charges.create({
+                amount: totalSum * 100,
+                currency: 'eur',
+                description: 'magazine payment',
+                source: token,
+                metadata: {
+                    order_id: result._id.toString()
+                }
+            });
             return req.user.clearCart();
 
         })
@@ -267,6 +281,6 @@ exports.getInvoice = (req, res, next) => {
         })
         .catch(err => next(err));
 
-        
+
 
 };
